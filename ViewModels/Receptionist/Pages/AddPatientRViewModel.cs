@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace bazy1.ViewModels.Receptionist.Pages
 {
-    public class AddPatientViewModel : ViewModelBase
+    public class AddPatientRViewModel : ViewModelBase
     {
         private string _firstName;
         private string _lastName;

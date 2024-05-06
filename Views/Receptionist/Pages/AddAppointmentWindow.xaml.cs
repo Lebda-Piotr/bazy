@@ -25,7 +25,7 @@ namespace bazy1.Views.Receptionist.Pages
             // Utwórz nową wizytę na podstawie danych wprowadzonych przez użytkownika
             var newAppointment = new Appointment
             {
-                DateTime = viewModel.SelectedAppointment.ToString("yyyy-MM-dd HH:mm"),
+                Date = viewModel.SelectedAppointment.ToString("yyyy-MM-dd HH:mm"),
                 Goal = viewModel.Goal,
                 NotificationId = viewModel.NotificationId,
                 PatientId = viewModel.PatientId

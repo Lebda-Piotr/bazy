@@ -77,7 +77,7 @@ namespace bazy1.ViewModels.Receptionist
         private void ExecuteShowPatientRegistrationCommand(object obj)
         {
             // Ustawiamy widok rejestracji pacjenta
-            CurrentViewModel = new AddPatientViewModel();
+            CurrentViewModel = new AddPatientRViewModel();
             Caption = "Rejestracja pacjenta";
         }
 

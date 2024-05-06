@@ -48,7 +48,7 @@ namespace bazy1.Repositories
                             Appointment appointment = new Appointment
                             {
                                 Id = Convert.ToInt32(reader["Id"]),
-                                DateTime = reader["DateTime"].ToString(),
+                                Date = reader["DateTime"].ToString(),
                                 Goal = reader["Goal"].ToString(),
                                 NotificationId = Convert.ToInt32(reader["NotificationId"]),
                                 PatientId = Convert.ToInt32(reader["PatientId"]),
@@ -75,7 +75,7 @@ namespace bazy1.Repositories
                     string query = "INSERT INTO appointments (DateTime, Goal, NotificationId, PatientId) " +
                                    "VALUES (@DateTime, @Goal, @NotificationId, @PatientId)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@DateTime", appointment.DateTime);
+                    cmd.Parameters.AddWithValue("@DateTime", appointment.Date);
                     cmd.Parameters.AddWithValue("@Goal", appointment.Goal);
                     cmd.Parameters.AddWithValue("@NotificationId", appointment.NotificationId);
                     cmd.Parameters.AddWithValue("@PatientId", appointment.PatientId);
@@ -108,7 +108,7 @@ namespace bazy1.Repositories
                     while (start < end)
                     {
                         // Sprawdź, czy termin jest już zajęty
-                        if (!DatabaseService.getDbContext().Appointments.Any(a => DateTime.Parse(a.DateTime) == start))
+                        if (!DatabaseService.getDbContext().Appointments.Any(a => DateTime.Parse(a.Date) == start))
                         {
                             availableAppointments.Add(start);
                         }
