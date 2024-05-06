@@ -2,6 +2,7 @@
 using System.IO;
 using bazy1.Models;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -11,8 +12,9 @@ namespace bazy1 {
 	public class PrescriptionGenerator {
 		public string generate(Prescription prescription, Doctor doctor) {
             Console.WriteLine("genruje sie;");
-            //ViewModels.ViewModelBase.DbContext.Doctors.Where(doc => doc.Patients.Contains(prescription.Patient)).Where(doc => )
+			//ViewModels.ViewModelBase.DbContext.Doctors.Where(doc => doc.Patients.Contains(prescription.Patient)).Where(doc => )
 
+			FontManager.RegisterFont(File.OpenRead("LibreBarcode39Text-Regular.ttf"));
             QuestPDF.Settings.License = LicenseType.Community;
 			string fileTitle = Directory.GetCurrentDirectory() + "\\" + 
 				prescription.Id + 
@@ -51,15 +53,16 @@ namespace bazy1 {
 						table.Cell().Row(4).Column(1).BorderLeft(1F).Text("Rp");
 						table.Cell().Row(4).Column(2).BorderRight(1F).Text("Odpłatność");
 
-						for (int i = 0; i < 12; i++)
+						for (int i = 0; i < 11; i++)
 						{
 							Medicine med = new();
 							if (i < prescription.Medicines.Count) med = prescription.Medicines.ElementAt(i);
 							table.Cell().Row((uint)i + 5).Column(1).BorderLeft(1F).Text(
 								i < prescription.Medicines.Count ?
-								(med.Amount > 1 ? med.Amount + "x" : "") + med.Name + "\n" + med.Comments : "⠀\n");
+								(med.Amount > 1 ? med.Amount + "x" : "") + med.Name + " "+ med.Dose+ " "+ med.Comments : "⠀\n");
 							table.Cell().Column(2).Row((uint)i + 5).BorderRight(1F).Text(i < prescription.Medicines.Count ? med.Fraction * 100 + "%" : "⠀");
 						}
+						table.Cell().Row(16).ColumnSpan(2).BorderRight(1F).BorderLeft(1F).Text(prescription.Code).FontSize(25).AlignCenter().FontFamily("Libre Barcode 39 Text");
 
 						table.Cell().Row(17).Column(1).Border(1F).Text("Data wystawienia\n\n" + prescription.DateOfPrescription.Value.ToShortDateString());
 						table.Cell().Row(18).Column(1).Border(1F).Text("Data realizacji od dnia:\n\n");
@@ -73,8 +76,8 @@ namespace bazy1 {
 
 
 			}).GeneratePdf(fileTitle);
-
-			prescription.Pdf = fileTitle;
+            Console.WriteLine("skonczul");
+            prescription.Pdf = fileTitle;
 			//prescription.Pdf = doc.GenerateImages((int index) => { return DateTime.Now.ToString(); });
 			//ViewModels.ViewModelBase.DbContext.Update(prescription.Medicines);
 
@@ -82,8 +85,6 @@ namespace bazy1 {
 			ViewModels.ViewModelBase.DbContext.SaveChanges();
 			return fileTitle;
         }
-
-
 	}
 }
 

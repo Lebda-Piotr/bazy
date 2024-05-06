@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bazy1.Models;
-using QuestPDF;
+
 using dbm = bazy1.Models;
 using System.Windows.Input;
 using Microsoft.VisualBasic;
@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using bazy1.Utils;
 
 namespace bazy1.ViewModels.Doctor.Pages {
 	public class PatientListViewModel : ViewModelBase {
@@ -28,27 +29,8 @@ namespace bazy1.ViewModels.Doctor.Pages {
 		public ICommand AddPatientCommand { get; set; }
 		public ICommand PatientDeleteCommand { get; set; }
 		public ICommand ShowAddMedicationCommand { get; set; }
+		public ICommand ShowAddReferralCommand { get; set; }
 
-		public string PatientDetails{
-			get {
-				string adressess = "", info = "";
-				if (SelectedPatient != null)
-				{
-					Console.WriteLine(DbContext.Addresses.Count());
-					var tempPatient = DbContext.Patients.Where(pat => pat.Id == SelectedPatient.Id).First();
-					if (tempPatient.SecondName != null) info += "Drugie imię: " + tempPatient.SecondName + "\n";
-					Console.WriteLine("ile: " + DbContext.Addresses.Where(adr => adr.Patients.Contains(tempPatient)).Count());
-					DbContext.Addresses.Where(adr => adr.Patients.Contains(tempPatient)).ToList().
-						ForEach(adr => adressess += adr.City + " " + adr.PostalCode + " ul." + adr.Street + " " + adr.BuildingNumber + "\n");
-					info = $"Data urodzenia: {tempPatient.BirthDate.Value.ToShortDateString()}\n";
-					if (tempPatient.PhoneNumber != null) info += "Telefon: " + tempPatient.PhoneNumber + "\n";
-					if (tempPatient.Email != null) info += "Email: " + tempPatient.Email + "\n";
-					info += "Adresy:" + adressess;
-					info += "Przyjmowane leki:\n";
-					string tempDoses = "";
-					var names = DbContext.Database.SqlQueryRaw<string>("select med.name from patient_diesease pd join prescription pr on pr.patient_id=pd.patient_id" +
-				" join prescription_medicine pm on pm.prescription_id = pr.id" +
-				$" join medicine med on med.id = pm.medicine_id where pd.patient_id={SelectedPatient.Id}").ToList();
 
 					var dosages = DbContext.Database.SqlQueryRaw<string>("select med.dose from patient_diesease pd join prescription pr on pr.patient_id=pd.patient_id" +
 " join prescription_medicine pm on pm.prescription_id = pr.id" +
@@ -100,7 +82,7 @@ $" join medicine med on med.id = pm.medicine_id where pd.patient_id={SelectedPat
 			});
 			//PrescriptionGenerator p = new();
 			//p.generate();
-
+			ShowAddReferralCommand = new BasicCommand(obj => { viewModel.CurrentViewModel = new AddReferralViewModel(doctor, SelectedPatient); });
 			AddPatientCommand = new BasicCommand(obj => viewModel.CurrentViewModel = new AddPatientViewModel(doctor,viewModel));
 			PatientDeleteCommand = new BasicCommand(obj =>
 			{
@@ -132,27 +114,31 @@ $" join medicine med on med.id = pm.medicine_id where pd.patient_id={SelectedPat
 				if (SelectedPatient != null) viewModel.CurrentViewModel = new AddDiseaseViewModel(DbContext.Patients.Where(pat => pat.Id == SelectedPatient.Id).First()); 
 			});
 
-			Console.WriteLine(doctor.Name);
+            Console.WriteLine(doctor.Name);
 
 
-			//_patientsList = new(doctor.Patients);
-			Console.WriteLine(_patientsList.Count());
-		}
+            //_patientsList = new(doctor.Patients);
+            Console.WriteLine(_patientsList.Count());
+        }
 
-		public ObservableCollection<Patient> PatientsList {
-			get => _patientsList; 
-			set{
-				_patientsList = value;
-				OnPropertyChanged(nameof(PatientsList));
-			}
-		}
+        public ObservableCollection<Patient> PatientsList
+        {
+            get => _patientsList;
+            set
+            {
+                _patientsList = value;
+                OnPropertyChanged(nameof(PatientsList));
+            }
+        }
 
-		public Patient SelectedPatient {
-			get => _selectedPatient;
-			set{
-			 _selectedPatient = value;
-				OnPropertyChanged(nameof(SelectedPatient));
-			}
-		}
-	}
+        public Patient SelectedPatient
+        {
+            get => _selectedPatient;
+            set
+            {
+                _selectedPatient = value;
+                OnPropertyChanged(nameof(SelectedPatient));
+            }
+        }
+    }
 }

@@ -1,5 +1,7 @@
 ﻿using bazy1.Models;
 using bazy1.Utils;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Mysqlx.Resultset;
 using Org.BouncyCastle.Utilities.Encoders;
@@ -7,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -14,6 +18,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Linq;
+using static bazy1.ViewModels.Doctor.Pages.PrescriptionsViewModel;
 
 namespace bazy1.ViewModels.Doctor.Pages
 {
@@ -29,6 +36,36 @@ namespace bazy1.ViewModels.Doctor.Pages
 		public ICommand AddPrescriptionCommand { get; set; }
 		public ICommand DeleteMedicationCommand { get; set; }
 		public Medicine SelectedMedicine { get;set; }
+		private MedicinePart _fetchedMedicine;
+		private MedicinePart _fetchedMedicineDataGrid;
+
+
+		public class MedicinePart {
+			public string Name { get; set; }
+			public override string ToString() {
+				return Name;
+			}
+		};
+
+		private static List<MedicinePart> _fetchedMedicines = [];
+		public MedicinePart FetchedMedicine {
+			get => _fetchedMedicine;
+				set {
+				_fetchedMedicine = value;
+				needToValidate["FetchedMedicine"] = true;
+				OnPropertyChanged(nameof(FetchedMedicine));
+			}
+		}
+
+
+		public List<MedicinePart> FetchedMedicines {
+			get => _fetchedMedicines;
+			set {
+				_fetchedMedicines = value;
+				OnPropertyChanged(nameof(FetchedMedicines));
+			}
+		}
+
 		public ObservableCollection<Medicine> Medicines {
             get => medicines;
             set {
@@ -67,7 +104,8 @@ namespace bazy1.ViewModels.Doctor.Pages
 
 		public string Name {
 			get => _name;
-            set {				
+            set {
+				Console.WriteLine(FetchedMedicines.Count());
 				needToValidate["Name"] = true;				
 				_name = value;
 				OnPropertyChanged(nameof(Name));
@@ -149,12 +187,37 @@ namespace bazy1.ViewModels.Doctor.Pages
 
 		}
 
+		private async void loadXML(bool download) {
+
+				if (download)
+				{
+					var url = "https://rejestry.ezdrowie.gov.pl/api/rpl/medicinal-products/public-pl-report/4.0.0/overall.xml";
+					var filePath = "rpl.xml";
+					var httpClient = new HttpClientDownloadWithProgress(url,filePath);
+
+					httpClient.ProgressChanged += HttpClient_ProgressChanged;
+					await httpClient.StartDownload();
+
+					void HttpClient_ProgressChanged(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage) {
+						Console.WriteLine(progressPercentage);
+
+					}
+				}
+			
+			XNamespace xNamespace = "http://rejestry.ezdrowie.gov.pl/rpl/eksport-danych-v4.0.0";
+			var medicines = XDocument.Load("rpl.xml").Root.Descendants(xNamespace + "produktLeczniczy");
+			foreach (var med in medicines)
+			{
+				FetchedMedicines.Add(new MedicinePart{ Name = med.Attribute("nazwaProduktu").Value});
+			}
+		}
 		public AddMedicationViewModel(Patient patient, Disease disease, DoctorViewModel parentViewModel) {
 			var tmp = patient;
 			this.parentViewModel = parentViewModel;
 			Medicines = new(parentViewModel.Medicines);
 			this.disease = disease;
 			parentViewModel.Medicines = [];
+			loadXML(true);
 
 
 			SelectedPatient = DbContext.Patients.Where(pat => pat.Id == patient.Id).First();
@@ -172,7 +235,7 @@ namespace bazy1.ViewModels.Doctor.Pages
 				{
                     Console.WriteLine(
 						DbContext.Patients.Where(pat => pat.Id == SelectedPatient.Id).First().Name);
-                    Prescription pr = new Prescription { Medicines = this.Medicines, DateOfPrescription = DateTime.Now, RealisationDate = Date, Doctor = DbContext.Doctors.Where(doc => doc.UserId == parentViewModel.CurrentUser.Id).First(), Patient = DbContext.Patients.Where(pat => pat.Id == SelectedPatient.Id).First()};
+                    Prescription pr = new Prescription { Medicines = this.Medicines, DateOfPrescription = DateTime.Now, RealisationDate = Date, Doctor = DbContext.Doctors.Where(doc => doc.UserId == parentViewModel.CurrentUser.Id).First(), Patient = DbContext.Patients.Where(pat => pat.Id == SelectedPatient.Id).First(), Code = string.Concat(Guid.NewGuid().ToString().Replace("-","").Take(22))};
 					//SelectedPatient.Diseases.Where(d => d.Id == disease.Id).First().Medicines.Add(Medicines.tol);
 					Console.WriteLine("mesd:" + Medicines.Count());
 					DbContext.Update(pr);
@@ -198,9 +261,9 @@ namespace bazy1.ViewModels.Doctor.Pages
 				
                 //Zrobione po to żeby odświeżyć wartości i tym samym uruchomić walidację po kliknięciu przycisku
 
-				if (ErrorCollection.Count == 0)
+				if (ErrorCollection.Count == 0 && !string.IsNullOrEmpty(Fraction))
 				{
-					medicines.Add(new Medicine { Dose = Dose, Amount = int.Parse(Amount), Name = Name, Comments = Comments, Fraction = float.Parse(Fraction)/100F });
+					medicines.Add(new Medicine { Dose = Dose, Amount = int.Parse(Amount), Name = FetchedMedicine.Name, Comments = Comments, Fraction = float.Parse(Fraction)/100F });
 					Prescription prescription = new() { Medicines = medicines, DateOfPrescription = DateTime.Now, RealisationDate = Date, Patient = SelectedPatient, Doctor = DbContext.Doctors.Where(doc => doc.UserId == parentViewModel.CurrentUser.Id).First() };
 
 					foreach (var prop in needToValidate)

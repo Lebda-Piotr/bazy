@@ -39,6 +39,8 @@ public partial class Przychodnia9Context : DbContext
 
     public virtual DbSet<Receptionist> Receptionists { get; set; }
 
+    public virtual DbSet<Referral> Referrals { get; set; }
+
     public virtual DbSet<Specialization> Specializations { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -523,6 +525,49 @@ public partial class Przychodnia9Context : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Receptionist_User1");
+        });
+
+        modelBuilder.Entity<Referral>(entity =>
+        {
+            entity.HasKey(e => new { e.Id, e.PatientId }).HasName("PRIMARY");
+
+            entity.ToTable("referral");
+
+            entity.HasIndex(e => new { e.DoctorId, e.DoctorUserId }, "doctor_id");
+
+            entity.HasIndex(e => e.PatientId, "patient_id");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+            entity.Property(e => e.PatientId).HasColumnName("patient_id");
+            entity.Property(e => e.Code)
+                .HasMaxLength(100)
+                .HasColumnName("code");
+            entity.Property(e => e.Date)
+                .HasColumnType("date")
+                .HasColumnName("date");
+            entity.Property(e => e.Disease)
+                .HasMaxLength(100)
+                .HasColumnName("disease");
+            entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
+            entity.Property(e => e.DoctorUserId).HasColumnName("doctor_user_id");
+            entity.Property(e => e.Information)
+                .HasMaxLength(300)
+                .HasColumnName("information");
+            entity.Property(e => e.MedicalEntity)
+                .HasMaxLength(300)
+                .HasColumnName("medical_entity");
+            entity.Property(e => e.Pdf).HasMaxLength(100);
+
+            entity.HasOne(d => d.Patient).WithMany(p => p.Referrals)
+                .HasForeignKey(d => d.PatientId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("referral_ibfk_1");
+
+            entity.HasOne(d => d.Doctor).WithMany(p => p.Referrals)
+                .HasForeignKey(d => new { d.DoctorId, d.DoctorUserId })
+                .HasConstraintName("referral_ibfk_2");
         });
 
         modelBuilder.Entity<Specialization>(entity =>

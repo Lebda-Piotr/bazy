@@ -4,16 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:bazy1.Views.Doctor.Pages"
+             xmlns:dotNetKitControls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
+             xmlns:input="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
              xmlns:vrs="clr-namespace:bazy1.Validation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
+
+
     <UserControl.Resources>
         <Style x:Key="TooltipStyle" TargetType="FrameworkElement">
             <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
             <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
             <Setter Property="ToolTipService.IsEnabled" Value="True"/>
         </Style>
+        <ItemsPanelTemplate x:Key="ComboBoxItemsPanelTemplate">
+            <VirtualizingStackPanel/>
+        </ItemsPanelTemplate>
         <ControlTemplate x:Key="validationTemplate">
             <Grid>
                 <Ellipse Fill="Green" Opacity="1.0" Width="10" Height="10"
@@ -73,16 +80,16 @@
 
                     <StackPanel Orientation="Horizontal" Margin="10,25,0,0">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock Text="Nazwa leku" FontSize="15" VerticalAlignment="Top" Margin="0,0,10,0"></TextBlock>
-                            <TextBox Width="120" VerticalAlignment="Top" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[Name]}" Style="{StaticResource TooltipStyle}">
-                                <TextBox.Text>
-                                    <Binding Path="Name" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                            <vrs:EmptyTextVR/>
-                                        </Binding.ValidationRules>
-                                </Binding>
-                                </TextBox.Text>
-                            </TextBox>
+
+                                <TextBlock Text="Nazwa leku" FontSize="15" VerticalAlignment="Top" Margin="0,0,10,0"></TextBlock>
+                                <ComboBox Name="medicinesList" ItemsSource="{Binding FetchedMedicines}" SelectedIndex="1" SelectedItem="{Binding FetchedMedicine}" IsTextSearchEnabled="True" IsEditable="True" Width="120" Margin="0,0,10,0">
+                                    <ComboBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel />
+                                        </ItemsPanelTemplate>
+                                    </ComboBox.ItemsPanel>
+                                </ComboBox>
+
                             <TextBlock Text="Dawkowanie" FontSize="15" VerticalAlignment="Top" Margin="0,0,10,0"></TextBlock>
                             <TextBox Width="120" VerticalAlignment="Top" Margin="0,0,10,0" Text="{Binding Dose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" ToolTip="{Binding ErrorCollection[Dose]}" Style="{StaticResource TooltipStyle}"></TextBox>
                             <TextBlock Text="Liczba opakowań" FontSize="15" Margin="0,0,10,0"></TextBlock>
@@ -120,6 +127,7 @@
                                         </Validation.ErrorTemplate>
 
                                     </DataGridTextColumn>
+
                                         <DataGridTextColumn Header="Dawkowanie">
                                             <DataGridTextColumn.Binding>
                                                 <Binding Path="Dose">
@@ -146,7 +154,8 @@
                         </StackPanel>
 
                     </StackPanel>
-                    <Button Content="Dodaj" Width="120" Height="25" HorizontalAlignment="Left" Margin="140,25,0,0" Command="{Binding AddMedicineCommand}"></Button>
+
+                        <Button Content="Dodaj" Width="120" Height="25" HorizontalAlignment="Left" Margin="140,25,0,0" Command="{Binding AddMedicineCommand}"></Button>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,40,0,0">
                             <TextBlock Text="Data realizacji od dnia: " VerticalAlignment="Center"></TextBlock>
                             <DatePicker ToolTip="{Binding ErrorCollection[Date]}" Style="{StaticResource TooltipStyle}" Width="120" Height="25" SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></DatePicker>

@@ -24,13 +24,6 @@
             <pagesViews:PatientListControl/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type pagesViewModels:AddMedicationViewModel}">
-            <AdornerDecorator>
-        <pagesViews:AddMedicationControl/>
-            </AdornerDecorator>
-        </DataTemplate>
-
-
         <DataTemplate DataType="{x:Type pagesViewModels:ScheduleViewModel}">
             <pagesViews:ScheduleControl/>
         </DataTemplate>
@@ -55,6 +48,14 @@
             <pagesViews:PrescriptionListView/>
         </DataTemplate>
 
+
+        <DataTemplate DataType="{x:Type pagesViewModels:AddReferralViewModel}">
+            <pagesViews:AddReferralControl/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type pagesViewModels:ReferralViewViewModel}">
+            <pagesViews:ReferralsView/>
+        </DataTemplate>
     </Window.Resources>
 
 
@@ -65,10 +66,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
-            <Button x:Name="listPatientButton" Width="auto" Height="20" Content="Lista pacjentów" Command="{Binding ShowPatientListViewCommand}"/>
-            <Button x:Name="scheduleButton" Width="auto" Height="20" Content="Terminarz" Command="{Binding ShowScheduleViewCommand}"/>
-            <Button x:Name="precriptionButton" Width="auto" Height="20" Content="Wystawione recepty" Command="{Binding ShowPrescriptionViewCommand}"/>
-
+            <Button x:Name="listPatientButton" Width="auto" Height="40" Content="Zarządzanie pacjentami" Command="{Binding ShowPatientListViewCommand}"/>
+            <Button x:Name="scheduleButton" Width="auto" Height="40" Content="Terminarz" Command="{Binding ShowScheduleViewCommand}"/>
+            <Button x:Name="precriptionButton" Width="auto" Height="40" Content="Wystawione recepty" Command="{Binding ShowPrescriptionViewCommand}"/>
+            <Button x:Name="referralsButton" Width="auto" Height="40" Content="Wystawione skierowania" Command="{Binding ShowReferralViewCommand}"/>
         </StackPanel>
 
         <ContentControl Content="{Binding CurrentViewModel}" Grid.Column="2"/>

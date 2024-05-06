@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="bazy1.Views.Doctor.Pages.AddReferralControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:bazy1.Views.Doctor.Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+
+    <UserControl.Resources>
+        <Style x:Key="TooltipStyle" TargetType="FrameworkElement">
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+            <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
+            <Setter Property="ToolTipService.IsEnabled" Value="True"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Background="AliceBlue">
+        <StackPanel Margin="10" Orientation="Horizontal">
+            <TextBlock Text="Wystawiasz receptę dla: "/>
+            <TextBlock Text="{Binding Patient}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Skierowanie do"></TextBlock>
+            <ComboBox Name="medicalEntitiesList" ItemsSource="{Binding MedicalEntities}" SelectedIndex="1" SelectedItem="{Binding MedicalEntity}" IsTextSearchEnabled="True" IsEditable="True" Width="200" Height="25" Margin="0,0,10,0">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+            <TextBlock Text="Rozpoznanie"></TextBlock>
+            <TextBox Text="{Binding Disease, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding ErrorCollection[Disease]}" Style="{StaticResource TooltipStyle}"/>
+            <TextBlock Text="Inne informacje"/>
+            <TextBox Text="{Binding Information}" Height="100"/>
+            <Button Content="Wystaw skierowanie" Command="{Binding AddReferralCommand}" Margin="0,10,0,0"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>
