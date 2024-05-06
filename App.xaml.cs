@@ -1,53 +1,47 @@
-﻿using bazy1.ViewModels;
-using bazy1.ViewModels.Admin;
-using bazy1.ViewModels.Doctor;
-using bazy1.Views;
-using bazy1.Views.Admin;
-using bazy1.Views.Doctor;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using bazy1.Models;
+using bazy1.Services;
 using Microsoft.Extensions.DependencyInjection;
-using MvvmDialogs;
-using System.Configuration;
-using System.Data;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace bazy1
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
-	{
-		public App()
-		{
-		}
+    public partial class App : Application
+    {
+        private IHost _host;
 
-		protected void ApplicationStartup(object sender, StartupEventArgs e) {
-			var vm = new LoginViewModel();
-			var loginView = new LoginView
-			{
-				DataContext = vm
-			};
-			vm.LoginCompleted += (s, e) =>
-			{
-				if (((UserEventArgs)e).UserType.Equals("lekarz"))
-				{
-					var mainView = new DoctorView();
-					loginView.Close();
-					mainView.Show();
-				}else if (((UserEventArgs)e).UserType.Equals("admin")){
-					var mainView = new AdminView();
-					loginView.Close();
-					mainView.Show();
-				}
-			};
-			loginView.Show();
-			
-		}
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
 
-		private void Vm_LoginCompleted(object? sender, EventArgs e) {
-			throw new NotImplementedException();
-		}
-	}
+            _host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddDbContext<Przychodnia9Context>();
+                    services.AddScoped<AppointmentNotificationService>();
+                })
+                .Build();
 
+            StartBackgroundService();
+        }
+
+        private async void StartBackgroundService()
+        {
+            using (var serviceScope = _host.Services.CreateScope())
+            {
+                var services = serviceScope.ServiceProvider;
+                var notificationService = services.GetRequiredService<AppointmentNotificationService>();
+
+                var cancellationTokenSource = new CancellationTokenSource();
+
+                await Task.Factory.StartNew(async () =>
+                {
+                    await notificationService.RunAsync(cancellationTokenSource.Token);
+                }, cancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }
+        }
+    }
 }

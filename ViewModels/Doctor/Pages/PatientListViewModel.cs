@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using bazy1.Models;
-
+using QuestPDF;
 using dbm = bazy1.Models;
 using System.Windows.Input;
 using Microsoft.VisualBasic;
@@ -114,31 +114,27 @@ $" join medicine med on med.id = pm.medicine_id where pd.patient_id={SelectedPat
 				if (SelectedPatient != null) viewModel.CurrentViewModel = new AddDiseaseViewModel(DbContext.Patients.Where(pat => pat.Id == SelectedPatient.Id).First()); 
 			});
 
-            Console.WriteLine(doctor.Name);
+			Console.WriteLine(doctor.Name);
 
 
-            //_patientsList = new(doctor.Patients);
-            Console.WriteLine(_patientsList.Count());
-        }
+			//_patientsList = new(doctor.Patients);
+			Console.WriteLine(_patientsList.Count());
+		}
 
-        public ObservableCollection<Patient> PatientsList
-        {
-            get => _patientsList;
-            set
-            {
-                _patientsList = value;
-                OnPropertyChanged(nameof(PatientsList));
-            }
-        }
+		public ObservableCollection<Patient> PatientsList {
+			get => _patientsList; 
+			set{
+				_patientsList = value;
+				OnPropertyChanged(nameof(PatientsList));
+			}
+		}
 
-        public Patient SelectedPatient
-        {
-            get => _selectedPatient;
-            set
-            {
-                _selectedPatient = value;
-                OnPropertyChanged(nameof(SelectedPatient));
-            }
-        }
-    }
+		public Patient SelectedPatient {
+			get => _selectedPatient;
+			set{
+			 _selectedPatient = value;
+				OnPropertyChanged(nameof(SelectedPatient));
+			}
+		}
+	}
 }
