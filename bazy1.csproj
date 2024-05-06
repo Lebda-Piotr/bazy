@@ -60,6 +60,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ViewModels\Receptionist\" />
+    <Folder Include="ViewModels\Receptionist\Pages\" />
+    <Folder Include="Views\Receptionist\" />
+    <Folder Include="Views\Receptionist\Pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Fonts\Dosis-Bold.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
