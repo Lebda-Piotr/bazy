@@ -1,4 +1,4 @@
-﻿<Window x:Class="bazy1.Views.Receptionist.Pages.AddPatientWindow"
+<Window x:Class="bazy1.Views.Receptionist.Pages.AddPatientWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Dodaj pacjenta" Height="300" Width="400">
@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Imię:" Grid.Row="0"/>
+        <TextBlock Text="Imi�:" Grid.Row="0"/>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="10" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Text="Nazwisko:" Grid.Row="1"/>

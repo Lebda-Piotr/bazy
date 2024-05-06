@@ -6,6 +6,8 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using bazy1.Views.Receptionist.Pages;
 using System.Threading;
+using bazy1.Models.Repositories;
+using bazy1.ViewModels.Doctor.Pages;
 
 namespace bazy1.ViewModels.Receptionist
 {

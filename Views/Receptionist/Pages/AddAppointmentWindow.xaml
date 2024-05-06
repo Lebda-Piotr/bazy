@@ -28,11 +28,11 @@
 
         <TextBlock Text="Id pacjenta:" Grid.Row="3"/>
         <TextBox Grid.Row="3" Grid.Column="1" Margin="10" Text="{Binding PatientId, UpdateSourceTrigger=PropertyChanged}"/>
-		<TextBlock Text="Termin:" Grid.Row="4"/>
-		<ComboBox Grid.Row="4" Grid.Column="1" Margin="10" ItemsSource="{Binding AvailableAppointments, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedAppointment, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="Termin:" Grid.Row="4"/>
+        <ComboBox Grid.Row="4" Grid.Column="1" Margin="10" ItemsSource="{Binding AvailableAppointments, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedAppointment, UpdateSourceTrigger=PropertyChanged}"/>
 
 
-		<StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
             <Button Content="Anuluj" Margin="0 0 10 0" Click="CancelButton_Click"/>
             <Button Content="Dodaj wizyte" Click="AddButton_Click"/>
         </StackPanel>

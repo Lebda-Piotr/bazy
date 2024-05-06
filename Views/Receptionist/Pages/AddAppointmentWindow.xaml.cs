@@ -50,4 +50,3 @@ namespace bazy1.Views.Receptionist.Pages
         }
     }
 }
-

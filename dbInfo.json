@@ -1,5 +1,6 @@
 {
   "ConnectionStrings": {
+<<<<<<< HEAD
     "BazaPrzychodnia": "Server=localhost;Database=przychodnia;Uid=root;Pwd=;"
   }
 }

@@ -5,22 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bazy1
-{
-    internal class DatabaseService
-    {
+namespace bazy1 {
+	internal class DatabaseService {
+		
+		private static Przychodnia9Context _dbContext;
 
-        private static PrzychodniaContext _dbContext;
+		public DatabaseService(Przychodnia9Context dbContext) {
+			_dbContext = dbContext;
+		}
 
-        public DatabaseService(PrzychodniaContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public static PrzychodniaContext getDbContext()
-        {
-            return _dbContext;
-        }
-
-    }
+		public static Przychodnia9Context getDbContext() {
+			return _dbContext;
+		}
+		
+	}
 }

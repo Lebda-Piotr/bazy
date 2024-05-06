@@ -33,11 +33,10 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
             <Button Width="auto" Height="20" Content="Rejestracja pacjenta" Command="{Binding ShowPatientRegistrationCommand}"/>
-            <Button Width="auto" Height="20" Content="ZarzÄ…dzanie wizytami" Command="{Binding ShowAppointmentManagementCommand}"/>
-            <!-- Dodaj inne przyciski lub interfejsy uÅ¼ytkownika dla innych funkcji recepcjonisty -->
+            <Button Width="auto" Height="20" Content="Zarz¹dzanie wizytami" Command="{Binding ShowAppointmentManagementCommand}"/>
+            <!-- Dodaj inne przyciski lub interfejsy u¿ytkownika dla innych funkcji recepcjonisty -->
         </StackPanel>
 
         <ContentControl Content="{Binding CurrentViewModel}" Grid.Column="1"/>
     </Grid>
 </Window>
-

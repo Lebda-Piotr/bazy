@@ -21,5 +21,9 @@ namespace bazy1.Views.Admin.Pages {
 		public UserAddControl() {
 			InitializeComponent();
 		}
-	}
+
+		private void Logins_TextChanged(object sender, TextChangedEventArgs e) {
+
+        }
+    }
 }

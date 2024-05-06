@@ -13,20 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace bazy1.Views.Doctor.Pages
-{
-    /// <summary>
-    /// Logika interakcji dla klasy PatientListControl.xaml
-    /// </summary>
-    public partial class PatientListControl : UserControl
-    {
-        public PatientListControl()
-        {
-            InitializeComponent();
-        }
+namespace bazy1.Views.Doctor.Pages {
+	/// <summary>
+	/// Logika interakcji dla klasy PatientListControl.xaml
+	/// </summary>
+	public partial class PatientListControl : UserControl {
+		public PatientListControl() {
+			InitializeComponent();
+		}
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+		private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e) {
 
         }
     }

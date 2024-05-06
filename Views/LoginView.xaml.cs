@@ -24,6 +24,7 @@ namespace bazy1.Views
 
 		private void BtnLoginClick(object sender, RoutedEventArgs e)
 		{
+
 		}
 
 

@@ -1,4 +1,4 @@
-ï»¿<Window x:Class="bazy1.Views.Receptionist.Pages.PatientsView"
+<Window x:Class="bazy1.Views.Receptionist.Pages.PatientsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid>
-        <!-- Panel gÃ³rny -->
+        <!-- Panel górny -->
         <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
             <Button Content="Wyloguj" Command="{Binding LogoutCommand}" />
         </Grid>
@@ -22,33 +22,33 @@
             </StackPanel>
         </Grid>
 
-        <!-- ZawartoÅ›Ä‡ gÅ‚Ã³wna -->
+        <!-- Zawartoœæ g³ówna -->
         <Grid Margin="220 10 10 10">
-            <!-- Tutaj moÅ¼na dodaÄ‡ zawartoÅ›Ä‡ gÅ‚Ã³wnego interfejsu uÅ¼ytkownika dla recepcjonisty -->
+            <!-- Tutaj mo¿na dodaæ zawartoœæ g³ównego interfejsu u¿ytkownika dla recepcjonisty -->
             <TextBlock Text="{Binding Caption}" Margin="10"/>
             <ContentControl Content="{Binding CurrentViewModel}" Margin="10"/>
 
-            <!-- Lista pacjentÃ³w w formie tabeli -->
+            <!-- Lista pacjentów w formie tabeli -->
             <DataGrid ItemsSource="{Binding Patients}" AutoGenerateColumns="False" Margin="-75,20,95,0">
-    <DataGrid.Columns>
-        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-        <DataGridTextColumn Header="ImiÄ™" Binding="{Binding Name}"/>
-        <DataGridTextColumn Header="Nazwisko" Binding="{Binding Surname}"/>
-        <DataGridTextColumn Header="PESEL" Binding="{Binding Pesel}"/>
-        <DataGridTextColumn Header="Numer telefonu" Binding="{Binding PhoneNumber}"/>
-        <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Imiê" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Nazwisko" Binding="{Binding Surname}"/>
+                    <DataGridTextColumn Header="PESEL" Binding="{Binding Pesel}"/>
+                    <DataGridTextColumn Header="Numer telefonu" Binding="{Binding PhoneNumber}"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
 
-        <!-- Kolumna z menu kontekstowym -->
-        <DataGridTemplateColumn Header="Opcje">
-            <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                    <!-- Przycisk otwierajÄ…cy menu kontekstowe -->
-                    <Button Content="Opcje" Click="ContextMenuButton_Click"/>
-                </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-    </DataGrid.Columns>
-</DataGrid>
+                    <!-- Kolumna z menu kontekstowym -->
+                    <DataGridTemplateColumn Header="Opcje">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!-- Przycisk otwieraj¹cy menu kontekstowe -->
+                                <Button Content="Opcje" Click="ContextMenuButton_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
 
         </Grid>
     </Grid>

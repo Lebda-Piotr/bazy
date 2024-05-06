@@ -8,12 +8,17 @@
         xmlns:pagesViewModels="clr-namespace:bazy1.ViewModels.Admin.Pages"
         xmlns:pagesViews="clr-namespace:bazy1.Views.Admin.Pages"
         mc:Ignorable="d"
-        Title="AdminView" Height="450" Width="800">
+            xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+
+        md:DialogServiceViews.IsRegistered="True"
+        Title="AdminView" Height="450" Width="1200">
     <Window.DataContext>
         <!-- Ustawia MainViewModel jako viewmodel dla tego widoku-->
         <viewModels:AdminViewModel/>
     </Window.DataContext>
 
+    
+    
     <Window.Resources>
         <DataTemplate DataType="{x:Type pagesViewModels:AddUserViewModel}">
             <pagesViews:UserAddControl/>
@@ -22,6 +27,11 @@
         <DataTemplate DataType="{x:Type pagesViewModels:ListUserViewModel}">
             <pagesViews:UserListControl/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type pagesViewModels:ModifyUserViewModel}">
+            <pagesViews:UserModifyControl/>
+        </DataTemplate>
+
 
     </Window.Resources>
     
@@ -33,9 +43,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
-            <Button x:Name="addUserButton" Width="100" Height="20" Content="Dodaj użytkownika" Command="{Binding ShowAddUserViewCommand}"/>
-            <Button x:Name="listUserButton" Width="100" Height="20" Content="Lista użytkowników" Command="{Binding ShowUserListViewCommand}"/>
-            <TextBlock x:Name="userRemove" Text="Zmień dane użytkownika"></TextBlock>
+            <Button x:Name="addUserButton" Width="150" Height="20" Content="Dodaj użytkownika" Command="{Binding ShowAddUserViewCommand}"/>
+            <Button x:Name="listUserButton" Width="150" Height="20" Content="Lista użytkowników" Command="{Binding ShowUserListViewCommand}">
+            </Button>
 
         </StackPanel>
 
