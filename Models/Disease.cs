@@ -17,5 +17,7 @@ public partial class Disease
 
     public int Id { get; set; }
 
+    public virtual ICollection<Medicine> Medicines { get; set; } = new List<Medicine>();
+
     public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
 }

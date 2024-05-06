@@ -13,5 +13,9 @@ public partial class Address
 
     public string? BuildingNumber { get; set; }
 
+    public string? PostalCode { get; set; }
+
+    public string? Type { get; set; }
+
     public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
 }

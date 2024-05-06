@@ -13,16 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace bazy1.Views.Doctor.Pages
-{
-    /// <summary>
-    /// Logika interakcji dla klasy MedicalHistoryControl.xaml
-    /// </summary>
-    public partial class MedicalHistoryControl : UserControl
-    {
-        public MedicalHistoryControl()
-        {
-            InitializeComponent();
-        }
-    }
+namespace bazy1.Views.Doctor.Pages {
+	/// <summary>
+	/// Logika interakcji dla klasy MedicalHistoryControl.xaml
+	/// </summary>
+	public partial class MedicalHistoryControl : UserControl {
+		public MedicalHistoryControl() {
+			InitializeComponent();
+		}
+	}
 }

@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="bazy1.Views.Doctor.Pages.PatientAddControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:bazy1.Views.Doctor.Pages"
+             xmlns:vm="clr-namespace:bazy1.ViewModels.Doctor.Pages" d:DataContext="{d:DesignInstance Type=vm:AddPatientViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+    <Style x:Key="TooltipStyle" TargetType="FrameworkElement">
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+        <Setter Property="ToolTipService.InitialShowDelay" Value="100"/>
+        <Setter Property="ToolTipService.IsEnabled" Value="True"/>
+    </Style>
+    </UserControl.Resources>
+
+
+    <Grid Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
+            <Button Content="Lista pacjentów" FontSize="10" Height="25" Width="150" HorizontalAlignment="Center" Command="{Binding ShowPatientListCommand}"/>
+            <Button Content="Nowy" FontSize="10" Height="25" Width="150" HorizontalAlignment="Center" Command="{Binding AddPatientCommand}" IsEnabled="False"/>
+        </StackPanel>
+
+        <TabControl SelectedIndex="0" Margin="10" BorderBrush="Gainsboro" Background="AliceBlue" Grid.Row="1">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="SlateBlue" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="Dane osobowe">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,10">
+                        <TextBlock Text="Imię*" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="80" FontSize="10" Height="15" VerticalAlignment="Center"  Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[Name]}" Style="{StaticResource TooltipStyle}"></TextBox>
+                        <TextBlock Text="Nazwisko*" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding Surname, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="120" Height="15" VerticalAlignment="Center" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[Surname]}"></TextBox>
+                        <TextBlock Text="Drugie Imię" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding SecondName}" Width="80" FontSize="10" Height="15" VerticalAlignment="Center"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <TextBlock Text="PESEL*" Margin="0,0,2,0"></TextBlock>
+                        <TextBox Text="{Binding Pesel, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="50" Height="15" VerticalAlignment="Center"  Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[Pesel]}" Style="{StaticResource TooltipStyle}"></TextBox>
+                        <TextBlock Text="Data urodzenia *" Margin="0,0,6,0"></TextBlock>
+                        <DatePicker SelectedDate="{Binding BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  FontSize="10" Width="120" Height="25" VerticalAlignment="Center" Margin="0,0,50,0" ToolTip="{Binding ErrorCollection[BirthDate]}" Style="{StaticResource TooltipStyle}" DisplayDate=""></DatePicker>
+                        <TextBlock Text="Płeć*" Margin="0,0,10,0"></TextBlock>
+                        <ComboBox ItemsSource="{Binding Sexes, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Sex}" Width="40" Height="20" SelectionChanged="ComboBox_SelectionChanged"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0">
+                        <TextBlock  Text="E-mail" Margin="0,0,4,0"></TextBlock>
+                        <TextBox Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="80" FontSize="10" Height="15" VerticalAlignment="Center"  Margin="0,0,15,0" ToolTip="{Binding ErrorCollection[Email]}" Style="{StaticResource TooltipStyle}"></TextBox>
+                        <TextBlock Text="Telefon" Margin="0,0,22,0"></TextBlock>
+                        <TextBox Text="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="80" Height="15" VerticalAlignment="Center" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[PhoneNumber]}" Style="{StaticResource TooltipStyle}"></TextBox>
+                    </StackPanel>
+
+                </StackPanel>
+            </TabItem>
+            
+            <TabItem Header="Adresy" HorizontalAlignment="Left" Width="62">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Adres zamieszkania" Background="MediumSlateBlue"></TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Miejscowość*" Margin="0,0,10,0" VerticalAlignment="Top"></TextBlock>
+                        <TextBox Text="{Binding City, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="80" Height="15" VerticalAlignment="Top" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[City]}" Style="{StaticResource TooltipStyle}"></TextBox>
+                    <TextBlock Text="Kod pocztowy*" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="80" FontSize="10" Height="15" VerticalAlignment="Top"  Margin="0,0,15,0" ToolTip="{Binding ErrorCollection[PostalCode]}" Style="{StaticResource TooltipStyle}"></TextBox>
+                    <TextBlock Text="Ulica" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding Street}" FontSize="10" Width="80" Height="15" VerticalAlignment="Top" Margin="0,0,10,0"></TextBox>
+
+                    <TextBlock Text="Nr budynku*" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding BuildingNumber,ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="40" Height="15" VerticalAlignment="Top" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[BuildingNumber]}" Style="{StaticResource TooltipStyle}"></TextBox>
+
+                </StackPanel>
+                    <TextBlock Background="MediumSlateBlue" Margin="0,10,0,0">Adres zameldowania</TextBlock>
+                    <CheckBox Content="Taki sam jak adres zamieszkania" Margin="0,10,0,0" IsChecked="{Binding SameAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding SecondAddressVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock Text="Miejscowość*" Margin="0,0,10,0" VerticalAlignment="Top"></TextBlock>
+                        <TextBox Text="{Binding City2, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="80" Height="15" VerticalAlignment="Center" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[City2]}" Style="{StaticResource TooltipStyle}" TextWrapping="NoWrap"></TextBox>
+                        <TextBlock Text="Kod pocztowy*" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding PostalCode2, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="80" FontSize="10" Height="15" VerticalAlignment="Top"  Margin="0,0,15,0" ToolTip="{Binding ErrorCollection[PostalCode2]}" Style="{StaticResource TooltipStyle}" TextWrapping="NoWrap"></TextBox>
+                        <TextBlock Text="Ulica" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding Street2}" FontSize="10" Width="80" Height="15" VerticalAlignment="Top" Margin="0,0,10,0"></TextBox>
+                        <TextBlock Text="Nr budynku*" Margin="0,0,10,0"></TextBlock>
+                        <TextBox Text="{Binding BuildingNumber2, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Width="40" Height="15" VerticalAlignment="Top" Margin="0,0,10,0" ToolTip="{Binding ErrorCollection[BuildingNumber2]}" Style="{StaticResource TooltipStyle}" TextWrapping="NoWrap"></TextBox>
+
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <Button Content="Zapisz" Width="100" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" Margin="0,0,60,100" Command="{Binding AddNewPatientCommand}"></Button>
+
+    </Grid>
+</UserControl>

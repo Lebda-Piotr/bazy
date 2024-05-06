@@ -1,45 +1,66 @@
 ﻿<UserControl x:Class="bazy1.Views.Doctor.Pages.PatientListControl"
+             xmlns:jm="clr-namespace:JacekMatulewski.WpfUtils;assembly=JacekMatulewski.WpfUtils"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:bazy1.Views.Doctor.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             
+             >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Lista pacjentów" FontSize="40"></TextBlock>
 
 
-        <DataGrid AutoGenerateColumns="False" VerticalScrollBarVisibility="Hidden" ColumnWidth="*" Style="{StaticResource DataGrid}" SelectionMode="Single" HeadersVisibility="Column" IsReadOnly="True" ItemsSource="{Binding PatientsList, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" Margin="0,65,0,0" SelectionChanged="DataGrid_SelectionChanged">
+        <DataGrid AutoGenerateColumns="False" VerticalScrollBarVisibility="Hidden" ColumnWidth="*" Style="{StaticResource DataGrid}" SelectionMode="Single" HeadersVisibility="Column" IsReadOnly="True" ItemsSource="{Binding PatientView, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0" SelectionChanged="DataGrid_SelectionChanged" Grid.Row="1">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Imię" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Nazwisko" Binding="{Binding Surname}"  />
                 <DataGridTextColumn Header="PESEL" Binding="{Binding Pesel}"  />
-                <DataGridTextColumn Header="Kontakt" Binding="{Binding PhoneNumber}"  />
+                <DataGridTextColumn Header="Telefon" Binding="{Binding PhoneNumber}"  />
                 <DataGridTextColumn Header="Ostatnia wizyta" Binding="{Binding LastVisit}"/>
                 <DataGridTextColumn Header="Najbliższa wizyta" Binding="{Binding NextVisit}"/>
 
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{
+                          Binding RelativeSource={
+                            RelativeSource FindAncestor, 
+                            AncestorType={x:Type UserControl}},
+                          Path=DataContext.PatientDetails}" Margin="10" />
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
 
             <DataGrid.ContextMenu>
 
                 <ContextMenu>
                     <MenuItem Header="Historia przebytych chorób" Command="{Binding ShowMedicalHistoryCommand}" />
                     <MenuItem Header="Dodaj schorzenie" Command="{Binding ShowAddDiseaseCommand}" />
-
+                    <MenuItem Header="Przepisz leki" Command="{Binding ShowAddMedicationCommand}"/>
+                    <MenuItem Header="Usuń pacjenta" Command="{Binding Source={x:Reference deletePatientBox}, Path=Show}" CommandParameter="Usunąć?"/>
 
                 </ContextMenu>
 
             </DataGrid.ContextMenu>
 
         </DataGrid>
-        <Grid/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center">
+            <Button Content="Lista pacjentów" FontSize="10" Height="25" Width="150" HorizontalAlignment="Center" IsEnabled="False"/>
+            <Button Content="Nowy" FontSize="10" Height="25" Width="150" HorizontalAlignment="Center" Command="{Binding AddPatientCommand}"/>
+            <TextBox Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Height="25" Width="150" Margin="10,0,0,0" HorizontalAlignment="Right"/>
+
+        </StackPanel>
+        <jm:MessageDialogBox x:Name="deletePatientBox" Caption="Usunąć pacjenta?" Icon="Question" Buttons="YesNo" CommandYes="{Binding PatientDeleteCommand, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
     </Grid>
+
 </UserControl>

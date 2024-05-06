@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="bazy1.Views.Doctor.Pages.PrescriptionListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:bazy1.Views.Doctor.Pages"
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DataGrid Grid.Column="0" AutoGenerateColumns="False" VerticalScrollBarVisibility="Hidden" ColumnWidth="*" Style="{StaticResource DataGrid}" SelectionMode="Single" HeadersVisibility="Column" IsReadOnly="True" ItemsSource="{Binding PrescriptionsView, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPrescription, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="DataGrid_SelectionChanged">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Pacjent" Binding="{Binding Patient}" />
+                <DataGridTextColumn Header="Data wystawienia" Binding="{Binding DateOfPrescription, StringFormat='{}{0:dd/MM/yyyy}'}"/>
+            </DataGrid.Columns>
+
+            <DataGrid.ContextMenu>
+
+                <ContextMenu>
+                    <MenuItem Header="Przepisz leki" Command="{Binding ShowAddMedicationCommand}" />
+                </ContextMenu>
+
+            </DataGrid.ContextMenu>
+
+        </DataGrid>
+        <wv2:WebView2 Grid.Column="1" Source= "{Binding RelativeSource={
+  RelativeSource FindAncestor, 
+  AncestorType={x:Type UserControl}},
+Path=DataContext.SelectedPrescription.Pdf, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</UserControl>

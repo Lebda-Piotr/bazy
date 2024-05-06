@@ -9,11 +9,19 @@ public partial class Prescription
 
     public DateTime? DateOfPrescription { get; set; }
 
-    public DateTime? ExpirationDate { get; set; }
+    public DateTime? RealisationDate { get; set; }
 
     public string? Code { get; set; }
 
     public int PatientId { get; set; }
+
+    public string? Pdf { get; set; }
+
+    public int? DoctorId { get; set; }
+
+    public int? DoctorUserId { get; set; }
+
+    public virtual Doctor? Doctor { get; set; }
 
     public virtual Patient Patient { get; set; } = null!;
 

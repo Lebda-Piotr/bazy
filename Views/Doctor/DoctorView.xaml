@@ -1,4 +1,4 @@
-﻿<Window x:Class="bazy1.Views.Doctor.DoctorView"
+﻿    <Window x:Class="bazy1.Views.Doctor.DoctorView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -24,6 +24,13 @@
             <pagesViews:PatientListControl/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type pagesViewModels:AddMedicationViewModel}">
+            <AdornerDecorator>
+        <pagesViews:AddMedicationControl/>
+            </AdornerDecorator>
+        </DataTemplate>
+
+
         <DataTemplate DataType="{x:Type pagesViewModels:ScheduleViewModel}">
             <pagesViews:ScheduleControl/>
         </DataTemplate>
@@ -39,6 +46,14 @@
         <DataTemplate DataType="{x:Type pagesViewModels:AddDiseaseViewModel}">
             <pagesViews:AddDiseaseControl/>
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type pagesViewModels:AddPatientViewModel}">
+            <pagesViews:PatientAddControl/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type pagesViewModels:PrescriptionsViewModel}">
+            <pagesViews:PrescriptionListView/>
+        </DataTemplate>
 
     </Window.Resources>
 
@@ -52,7 +67,7 @@
         <StackPanel Orientation="Vertical">
             <Button x:Name="listPatientButton" Width="auto" Height="20" Content="Lista pacjentów" Command="{Binding ShowPatientListViewCommand}"/>
             <Button x:Name="scheduleButton" Width="auto" Height="20" Content="Terminarz" Command="{Binding ShowScheduleViewCommand}"/>
-            <TextBlock x:Name="userRemove" Text="Zmień dane użytkownika"></TextBlock>
+            <Button x:Name="precriptionButton" Width="auto" Height="20" Content="Wystawione recepty" Command="{Binding ShowPrescriptionViewCommand}"/>
 
         </StackPanel>
 

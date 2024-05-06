@@ -22,18 +22,16 @@ namespace bazy1.ViewModels.Admin
     public class AdminViewModel : ViewModelBase
     {
 
-        private ViewModelBase _currentViewModel;
+		private ViewModelBase _currentViewModel;
         private string _caption;
         private DatabaseService _databaseService;
         private User _currentUser;
         private List<UserPart> _users;
-        public ICommand RefreshCommand { get; set; }
+        public ICommand RefreshCommand{ get; set; }
 
-        public List<UserPart> Users
-        {
+        public List<UserPart> Users {
             get => _users;
-            set
-            {
+            set {
                 _users = value;
                 OnPropertyChanged(nameof(Users));
             }
@@ -45,7 +43,7 @@ namespace bazy1.ViewModels.Admin
         private void ExecuteShowAddUserViewCommand(object obj)
         {
             //Ustawiamy viewmodel dla widoku dodawania użytkownika
-            CurrentViewModel = new AddUserViewModel(_currentUser, this);
+            CurrentViewModel = new AddUserViewModel(_currentUser,this);
             Caption2 = "Dodaj użytkownika";
 
         }
@@ -59,20 +57,19 @@ namespace bazy1.ViewModels.Admin
             Caption2 = "Lista użytkowników";
             Console.WriteLine("dasdas");
         }
-
+        
 
         public AdminViewModel()
         {
-            // RefreshCommand = new BasicCommand((object obj) => CurrentViewModel);
+           // RefreshCommand = new BasicCommand((object obj) => CurrentViewModel);
 
-            _databaseService = new DatabaseService(new PrzychodniaContext());
-            Users =
-                DatabaseService.getDbContext().Users.Select(u => new UserPart()
-                {
-                    Name = u.Name,
-                    Surname = u.Surname,
-                    Type = u.Type
-                }).ToList();
+			_databaseService = new DatabaseService(new Przychodnia9Context());
+            Users = 
+                DatabaseService.getDbContext().Users.Select(u => new UserPart(){
+                Name = u.Name,
+               Surname = u.Surname,
+                Type = u.Type
+            }).ToList();
 
             ShowAddUserViewCommand = new BasicCommand(ExecuteShowAddUserViewCommand);
             ShowUserListViewCommand = new BasicCommand(ExecuteShowUserListViewCommand);
@@ -100,5 +97,10 @@ namespace bazy1.ViewModels.Admin
                 OnPropertyChanged(nameof(CurrentViewModel));
             }
         }
+
+
+
+
+
     }
 }

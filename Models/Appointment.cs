@@ -7,7 +7,7 @@ public partial class Appointment
 {
     public int Id { get; set; }
 
-    public string? DateTime { get; set; }
+    public string? Date { get; set; }
 
     public string? Goal { get; set; }
 

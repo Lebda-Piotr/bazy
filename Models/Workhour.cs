@@ -11,15 +11,13 @@ public partial class Workhour
 
     public DateTime? End { get; set; }
 
-    public int DoctorId { get; set; }
-
-    public int DoctorUserId { get; set; }
-
     public int ReceptionistId { get; set; }
 
     public int ReceptionistUserId { get; set; }
 
-    public DayOfWeek DayOfWeek { get; set; }
+    public int DoctorId { get; set; }
+
+    public int DoctorUserId { get; set; }
 
     public virtual Doctor Doctor { get; set; } = null!;
 

@@ -6,8 +6,22 @@
              xmlns:local="clr-namespace:bazy1.Views.Admin"
              xmlns:viewModels="clr-namespace:bazy1.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             
+             >
     <Grid>
-        <TextBlock Text="{Binding Username}" FontSize="40"></TextBlock>  
+        <TextBlock Text="Imię" Margin="10,10,-10,-10"/>
+        <TextBlock Text="Nazwisko" Margin="10,45,-10,-45"/>
+        <TextBlock Text="Typ" Margin="10,80,-10,-80"/>
+        <TextBlock Text="Specjalizacja" Margin="10,115,-10,-115" Visibility="{Binding DoctorOptionsVisible, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+        <TextBox x:Name="Imię" HorizontalAlignment="Left" Height="23" Margin="140,10,0,0" TextWrapping="Wrap" Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="Nazwisko" HorizontalAlignment="Left" Height="23" Margin="140,45,0,0" TextWrapping="Wrap" Text="{Binding UserSurname,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" TextChanged="Logins_TextChanged"/>
+        
+        <ComboBox ItemsSource="{Binding UserTypes}" SelectedItem="{Binding ChosenUserType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="140,80,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox ItemsSource="{Binding Specializations}" SelectedItem="{Binding ChosenSpecialization }" Visibility="{Binding DoctorOptionsVisible}" HorizontalAlignment="Left" Margin="140,115,0,0" VerticalAlignment="Top" Width="120" DisplayMemberPath="Name"/>
+        <Button Content="Dodaj użytkownika" Command="{Binding AddUserCommand}" Width="80" Height="20"></Button>
+
     </Grid>
 </UserControl>

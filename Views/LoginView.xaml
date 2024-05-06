@@ -15,14 +15,11 @@
         <viewModels:LoginViewModel/>
     </Window.DataContext>
 
-    <Window.Resources> <!-- Konwertuj bool na jedną z wartości przyjmowanych przez Visibility-->
+    <Window.Resources>
+        <!-- Konwertuj bool na jedną z wartości przyjmowanych przez Visibility-->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
-    
-    <Window.Visibility>
-        <Binding Path="IsVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
-    </Window.Visibility>
-    
+
     <Border CornerRadius="10" BorderBrush="MediumSlateBlue" BorderThickness="2">
         <Border.Background>
             <ImageBrush ImageSource="/img/bg.jpg"/>

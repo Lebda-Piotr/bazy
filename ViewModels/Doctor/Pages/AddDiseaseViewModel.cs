@@ -11,55 +11,60 @@ namespace bazy1.ViewModels.Doctor.Pages
     using dbm = Models;
     public class AddDiseaseViewModel : ViewModelBase
     {
+        private Patient _selectedPatient;
         public ICommand AddDiseaseCommand { get; }
-        public string Name
-        {
+		public string Name { 
             get => _name;
-            set
-            {
+            set {
                 _name = value;
                 OnPropertyChanged(nameof(Name));
             }
         }
-        public string Description
-        {
+		public string Description {
             get => _description;
-            set
-            {
+            set {
                 _description = value;
                 OnPropertyChanged(nameof(Description));
             }
         }
-        public DateOnly Date
-        {
+		public DateTime DateFrom {
             get => _date;
-            set
-            {
+            set{
                 _date = value;
-                OnPropertyChanged(nameof(Date));
+                OnPropertyChanged(nameof(DateFrom));
             }
         }
 
-        private dbm.Doctor doctor;
+		public Patient SelectedPatient { 
+            get => _selectedPatient;
+            set {
+                _selectedPatient = value;
+                OnPropertyChanged(nameof(SelectedPatient));
+            }
+        }
+
+		private dbm.Doctor doctor;
         private string _name, _description;
-        private DateOnly _date;
-        public AddDiseaseViewModel(dbm.Patient patient)
-        {
+        private DateTime _date = DateTime.Now;
+        public AddDiseaseViewModel(dbm.Patient patient) {
+            SelectedPatient = patient;
             AddDiseaseCommand = new BasicCommand((object obj) =>
             {
                 Console.WriteLine(patient.Name);
                 Disease disease = new Disease();
                 disease.Comments = Description;
-                disease.DateFrom = Date.ToDateTime(new TimeOnly(0, 0, 0));
+                disease.DateFrom = DateTime.Parse(DateFrom.ToString());
                 if (!string.IsNullOrEmpty(Name) && !string.IsNullOrWhiteSpace(Name))
                 {
+                    Patient tempPatient;  
                     disease.Name = Name;
-                    patient.Diseases.Add(disease);
+                    DbContext.Patients.Where(pat => pat.Id == patient.Id).First().Diseases.Add(disease);
+                    Console.WriteLine("imie: " + DbContext.Patients.Where(pat => pat.Id == patient.Id).First());
                     DbContext.SaveChanges();
                     Console.WriteLine("choroby:" + patient.Diseases.Count());
-                }
+				}
 
-            });
+			});
         }
     }
 }

@@ -20,5 +20,9 @@ namespace bazy1.Views.Admin {
 		public AdminView() {
 			InitializeComponent();
 		}
-	}
+
+		private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+
+        }
+    }
 }

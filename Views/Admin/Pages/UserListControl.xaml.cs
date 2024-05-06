@@ -21,5 +21,6 @@ namespace bazy1.Views.Admin.Pages {
 		public UserListControl() {
 			InitializeComponent();
 		}
+
 	}
 }

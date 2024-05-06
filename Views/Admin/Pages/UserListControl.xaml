@@ -6,10 +6,97 @@
              xmlns:local="clr-namespace:bazy1.Views.Admin"
              xmlns:viewModels="clr-namespace:bazy1.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+             md:DialogServiceViews.IsRegistered="True"
+             xmlns:jm="clr-namespace:JacekMatulewski.WpfUtils;assembly=JacekMatulewski.WpfUtils"
+             >
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+
+
 
     <Grid>
-        <TextBlock Text="Lista użytkowników" FontSize="50"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="375"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock FontFamily="Roboto" Grid.Row="0" Text="Lista użytkowników" FontSize="25" Grid.ColumnSpan="2"/>
+        <DataGrid AutoGenerateColumns="False" VerticalScrollBarVisibility="Hidden" ColumnWidth="*" Grid.Row="1" Style="{StaticResource DataGrid}" SelectionMode="Single" HeadersVisibility="Column" IsReadOnly="True" ItemsSource="{Binding Users, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedUser, Mode=TwoWay}" Margin="0,0,0,180">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Imię" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Nazwisko" Binding="{Binding Surname}"  />
+                <DataGridTextColumn Header="Login" Binding="{Binding Login}"  />
+                <DataGridTextColumn Header="Ostatnie logowanie" Binding="{Binding LastLogin}"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+
+                <ContextMenu>
+                    <MenuItem Header="Zmodyfikuj" Command="{Binding ShowModifyPanel}" />
+                    <MenuItem Header="Usuń" Command="{Binding Source={x:Reference deleteBox}, Path=Show}" CommandParameter="Usunąć?"/>
+                </ContextMenu>
+                
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <UniformGrid x:Name="modifyPanel" Visibility="{Binding EditFormVisible}" Columns="2" Rows="3" Grid.Column="1" Grid.Row="1" Width="260" Margin="70,0,70,290">
+            <TextBlock Text="Imię" FontFamily="Roboto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBox Text="{Binding Name}" FontFamily="Roboto" Width="120" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left"
+                         Foreground="Black"
+                         CaretBrush="White"
+                         Background="Transparent"
+                         BorderThickness="1,1,1,1"/>
+            <TextBlock Text="Nazwisko " FontFamily="Roboto" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding Surname}" FontFamily="Roboto"  Width="120" Height="23" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                         Foreground="Black"
+                         CaretBrush="White"
+                         Background="Transparent"
+                         BorderThickness="1,1,1,1" />
+            <TextBlock Text="Login " FontFamily="Roboto" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <TextBox Text="{Binding Login}" FontFamily="Roboto" Width="120" Height="23" VerticalAlignment="Center"  HorizontalAlignment="Left"
+                         Foreground="Black"
+                         CaretBrush="White"
+                         Background="Transparent"
+                         BorderThickness="1,1,1,1" />
+
+        </UniformGrid>
+        <Button x:Name="btnLogin" Visibility="{Binding EditFormVisible}" BorderThickness="0" Content="Potwierdź" Cursor="Hand" Grid.Column="1" Foreground="White"
+                Command="{Binding ElementName=dialogBox, Path=Show}" CommandParameter="Zapisać?" Margin="0,-50,0,75" Grid.RowSpan="2">
+            
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="SlateBlue"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="DarkBlue"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Width="160" Height="40" CornerRadius="10" Background="{TemplateBinding Background}" Margin="0,35,0,0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+
+
+        </Button>
+        <jm:MessageDialogBox x:Name="dialogBox" Caption="Zapisać? " Icon="Question" Buttons="YesNo" CommandYes="{Binding ModifyUserCommand}" />
+        <jm:MessageDialogBox x:Name="deleteBox" Caption="Usunąć użytkownika?" Icon="Question" Buttons="YesNo" CommandYes="{Binding DeleteUserCommand}" />
+
+
 
     </Grid>
 </UserControl>
